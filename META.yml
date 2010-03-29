@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Pod-PseudoPod
-version:             0.15
+version:             0.16
 abstract:            A framework for parsing PseudoPod
 license:             ~
 author:              
