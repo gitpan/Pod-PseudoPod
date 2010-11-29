@@ -1,12 +1,10 @@
 package Pod::PseudoPod::HTML;
 use strict;
 use vars qw( $VERSION );
-$VERSION = '0.12';
+$VERSION = '0.17';
 use Carp ();
 use base qw( Pod::PseudoPod );
 
-use Text::Wrap 98.112902 ();
-$Text::Wrap::wrap = 'overflow';
 use HTML::Entities 'encode_entities';
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,7 +129,7 @@ sub end_for {
 sub start_table { 
   my ($self, $flags) = @_;
   if ($flags->{'title'}) {
-    $self->{'scratch'} .= "<i>Table: " . $flags->{'title'} . "</i>\n";
+    $self->{'scratch'} .= "<em>Table: " . $flags->{'title'} . "</em>\n";
   }
   $self->{'scratch'} .= '<table>';
   $self->emit('nowrap');
@@ -172,8 +170,8 @@ sub end_Document   {
 sub start_A { $_[0]{'scratch'} .= '<a href="#' }
 sub end_A   { $_[0]{'scratch'} .= '">link</a>' }
 
-sub start_B { $_[0]{'scratch'} .= '<b>' }
-sub end_B   { $_[0]{'scratch'} .= '</b>' }
+sub start_B { $_[0]{'scratch'} .= '<strong>' }
+sub end_B   { $_[0]{'scratch'} .= '</strong>' }
 
 sub start_C { $_[0]{'scratch'} .= '<code>' }
 sub end_C   { $_[0]{'scratch'} .= '</code>' }
@@ -181,8 +179,8 @@ sub end_C   { $_[0]{'scratch'} .= '</code>' }
 sub start_E { $_[0]{'scratch'} .= '&' }
 sub end_E   { $_[0]{'scratch'} .= ';' }
 
-sub start_F { $_[0]{'scratch'} .= ($_[0]{'in_figure'}) ? '<img src="' : '<i>' }
-sub end_F   { $_[0]{'scratch'} .= ($_[0]{'in_figure'}) ? '">' : '</i>' }
+sub start_F { $_[0]{'scratch'} .= ($_[0]{'in_figure'}) ? '<img src="' : '<em>' }
+sub end_F   { $_[0]{'scratch'} .= ($_[0]{'in_figure'}) ? '">' : '</em>' }
 
 sub start_G { $_[0]{'scratch'} .= '<sup>' }
 sub end_G   { $_[0]{'scratch'} .= '</sup>' }
@@ -190,8 +188,8 @@ sub end_G   { $_[0]{'scratch'} .= '</sup>' }
 sub start_H { $_[0]{'scratch'} .= '<sub>' }
 sub end_H   { $_[0]{'scratch'} .= '</sub>' }
 
-sub start_I { $_[0]{'scratch'} .= '<i>' }
-sub end_I   { $_[0]{'scratch'} .= '</i>' }
+sub start_I { $_[0]{'scratch'} .= '<em>' }
+sub end_I   { $_[0]{'scratch'} .= '</em>' }
 
 sub start_N {
   my ($self) = @_;
@@ -216,7 +214,6 @@ sub end_Z   { $_[0]{'scratch'} .= '">' }
 sub emit {
   my($self, $nowrap) = @_;
   my $out = $self->{'scratch'} . "\n";
-  $out = Text::Wrap::wrap('', '', $out) unless $nowrap;
   print {$self->{'output_fh'}} $out, "\n";
   $self->{'scratch'} = '';
   return;
@@ -252,9 +249,6 @@ Pod::PseudoPod::HTML -- format PseudoPod as HTML
 
 This class is a formatter that takes PseudoPod and renders it as
 wrapped html.
-
-Its wrapping is done by L<Text::Wrap>, so you can change
-C<$Text::Wrap::columns> as you like.
 
 This is a subclass of L<Pod::PseudoPod> and inherits all its methods.
 
