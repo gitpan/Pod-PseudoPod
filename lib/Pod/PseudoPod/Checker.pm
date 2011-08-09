@@ -5,7 +5,7 @@
 package Pod::PseudoPod::Checker;
 use strict;
 use vars qw( $VERSION );
-$VERSION = '0.17';
+$VERSION = '0.18';
 use Carp ();
 use base qw( Pod::PseudoPod );
 BEGIN { *DEBUG = defined(&Pod::PseudoPod::DEBUG)
